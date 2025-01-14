@@ -3,7 +3,7 @@ name: Audio to MIDI Conversion
 on:
   push:
     paths:
-      - audio/**  # Triggers when files are added or updated in the "audio" folder
+      - audio/**  # Triggers on files added to "audio" folder
 
 jobs:
   convert-audio:
@@ -19,7 +19,9 @@ jobs:
         python-version: '3.10'
 
     - name: Install dependencies
-      run: pip install -r requirements.txt
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
     - name: Convert audio to MIDI
       run: |
