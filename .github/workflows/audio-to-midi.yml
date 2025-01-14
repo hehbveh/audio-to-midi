@@ -1,0 +1,35 @@
+name: Audio to MIDI Conversion
+
+on:
+  push:
+    paths:
+      - audio/**  # Triggers when files are added or updated in the "audio" folder
+
+jobs:
+  convert-audio:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Convert audio to MIDI
+      run: |
+        mkdir -p output
+        for file in audio/*; do
+          basic-pitch output "$file"
+        done
+
+    - name: Upload MIDI files
+      uses: actions/upload-artifact@v3
+      with:
+        name: midi-files
+        path: output/
